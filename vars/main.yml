@@ -1,0 +1,5 @@
+---
+# vars file for nessus.agent
+nessus_key: fake00abcd00000efgh11111i0k222lmopq3333st4455u66v777777w88xy9999zabc00 
+agent_file_src: NessusAgent-10.0.1-ubuntu1110_amd64.deb 
+agent_file_dest: /tmp/NessusAgent-10.0.1-ubuntu1110_amd64.deb

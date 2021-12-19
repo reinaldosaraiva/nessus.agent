@@ -1,0 +1,27 @@
+---
+- name: Populate service facts
+  ansible.builtin.service_facts:
+
+- name: Print service facts
+  ansible.builtin.debug:
+    var: ansible_facts.services
+
+- name: Install, configure, and start NessusAgent
+  block:
+    - name: Import task install ubuntu >= 20
+      include_tasks: ubuntu.yml
+
+    - name: Copy deb file to server
+      copy:
+        src: "{{ agent_file_src }}"
+        dest: "{{ agent_file_dest }}"
+
+    - name: Link nessus agent to tenable
+      shell: /opt/nessus_agent/sbin/nessuscli agent link  --key={{ nessus_key }} --cloud
+
+    - name: Starting Nessus Agent service
+      ansible.builtin.systemd: 
+        name: nessusagent.service
+        state: start
+        enabled: yes
+  when: ansible_facts.services["nessusagent.service"].state == "stopped"
